@@ -1,6 +1,6 @@
 import {ADD_TO_CART, REMOVE_CART_ITEM} from '../constants/CartConstants';
 import {setValue} from '../helpers/LocalStorage';
-import axiosInstance, { BASE_URL } from '../utils/Axios';
+import axiosInstance, {BASE_URL} from '../utils/Axios';
 
 // add to cart
 export const addItemsToCart = (id, quantity) => async (dispatch, getState) => {
@@ -20,6 +20,7 @@ export const addItemsToCart = (id, quantity) => async (dispatch, getState) => {
         price: data.product.finalPrice,
         image: data.product.images[0].url,
         stock: data.product.stock,
+        maxOrderQuantity: data.product.maxOrderQuantity,
         quantity,
       },
     });

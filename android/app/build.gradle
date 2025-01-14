@@ -79,8 +79,8 @@ android {
         applicationId "com.parchun_king"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 24
-        versionName "1.4.6"
+        versionCode 26
+        versionName "1.4.7"
     }
     signingConfigs {
         debug {

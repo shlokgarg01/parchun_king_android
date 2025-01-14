@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {View, Text, FlatList, TouchableOpacity} from 'react-native';
 import React, {useEffect} from 'react';
 import AccountTabs from '../../components/Account/AccountTabs';
@@ -39,7 +40,7 @@ export default function Checkout(props) {
           orderPrices,
           orderItems,
           shippingAddress: selectedAddress,
-          address: addresses.find(address => address._id === selectedAddress)
+          address: addresses.find(address => address._id === selectedAddress),
         },
       },
     });

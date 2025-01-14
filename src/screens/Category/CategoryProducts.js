@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {showToast} from '../../helpers/ShowToast';
@@ -14,8 +15,10 @@ import ProductCard from '../../components/Products/ProductCard';
 import AccountStyles from '../Account/AccountStyles';
 import HomeComponentStyles from '../../components/Home/HomeComponentStyles';
 import {deviceWidth} from '../../helpers/Dimensions';
+import {useNavigation} from '@react-navigation/native';
 
 export default function CategoryProducts(props) {
+  const navigation = useNavigation();
   const category = props.route.params.category || undefined;
   const categoryId = props.route.params.categoryId || '';
   const searchTerm = props.route.params.searchTerm || '';
@@ -41,7 +44,9 @@ export default function CategoryProducts(props) {
 
     searchTerm.length > 0
       ? dispatch(getProducts(searchTerm, category))
-      : categoryId.length > 0 ? dispatch(getCategoryProducts(categoryId)) : null
+      : categoryId.length > 0
+      ? dispatch(getCategoryProducts(categoryId))
+      : null;
   }, [error, dispatch, category, categoryId, searchTerm]);
 
   return (
@@ -106,7 +111,11 @@ export default function CategoryProducts(props) {
           )}
         </View>
       ) : (
-        <CategoryProductsScreen categoryId={categoryId} products={products} />
+        <CategoryProductsScreen
+          categoryId={categoryId}
+          products={products}
+          navigation={navigation}
+        />
       )}
     </>
   );

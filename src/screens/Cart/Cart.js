@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   View,
   Text,
@@ -73,8 +74,8 @@ export default function Cart() {
 
   const checkout = () => {
     if (totalPrice < 200) {
-      showToast("info", "Please add a minnimum of ₹200 items in the cart")
-      return
+      showToast('info', 'Please add a minimum of ₹200 items in the cart');
+      return;
     }
 
     const orderPrices = {

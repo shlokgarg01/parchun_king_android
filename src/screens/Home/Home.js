@@ -1,4 +1,6 @@
-import {View, ScrollView, Image, TouchableOpacity} from 'react-native';
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-native/no-inline-styles */
+import {View, ScrollView, Image} from 'react-native';
 import React, {useState} from 'react';
 import HomeProducts from '../../components/Home/HomeProducts';
 import {useNavigation} from '@react-navigation/native';
@@ -20,6 +22,9 @@ import {showToast} from '../../helpers/ShowToast';
 import {clearErrors, getAllCategories} from '../../actions/CategoryAction';
 import HomeCategoryProducts from '../../components/Home/HomeCategoryProducts';
 import ViewCart from '../../components/Cart/ViewCart';
+import {addItemsToCart} from '../../actions/CartAction';
+import {getAllBanners} from '../../actions/BannerActions';
+import Loader from '../../components/Loader';
 
 export default function Home() {
   const navigation = useNavigation();
@@ -27,6 +32,7 @@ export default function Home() {
   const [activeIndex, setActiveIndex] = useState(0);
   const {error, categories} = useSelector(state => state.categories);
   const {cartItems} = useSelector(state => state.cart);
+  const {banners, loading} = useSelector(state => state.banners);
 
   useEffect(() => {
     if (error) {
@@ -37,27 +43,35 @@ export default function Home() {
     dispatch(getAllCategories());
   }, [error, dispatch]);
 
+  useEffect(() => {
+    cartItems.map(item => {
+      dispatch(addItemsToCart(item.product, item.quantity));
+    });
+
+    dispatch(getAllBanners());
+  }, []);
+
   const items = {
     activeIndex: activeIndex,
     carouselItems: [
       {
-        url: Image1,
+        url: banners?.length > 0 ? {uri: banners[0].url} : Image1,
         category: 'dairy',
       },
       {
-        url: Image2,
+        url: banners?.length > 1 ? {uri: banners[1].url} : Image2,
         category: 'grocery',
       },
       {
-        url: Image3,
+        url: banners?.length > 2 ? {uri: banners[2].url} : Image3,
         category: 'grocery',
       },
       {
-        url: Image4,
+        url: banners?.length > 3 ? {uri: banners[3].url} : Image4,
         category: 'fruits',
       },
       {
-        url: Image5,
+        url: banners?.length > 4 ? {uri: banners[4].url} : Image5,
         category: 'winter',
       },
     ],
@@ -107,7 +121,9 @@ export default function Home() {
     </View>
   );
 
-  return (
+  return loading ? (
+    <Loader />
+  ) : (
     <View>
       <ScrollView
         showsVerticalScrollIndicator={false}

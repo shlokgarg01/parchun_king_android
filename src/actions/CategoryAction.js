@@ -4,7 +4,7 @@ import {
   ALL_CATEGORIES_SUCCESS,
   CLEAR_ERRORS,
 } from '../constants/CategoryConstants';
-import axiosInstance, { BASE_URL } from '../utils/Axios';
+import axiosInstance, {BASE_URL} from '../utils/Axios';
 
 export const getAllCategories = () => async dispatch => {
   try {

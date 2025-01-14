@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import React, {useEffect} from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -5,17 +6,17 @@ import {useDispatch, useSelector} from 'react-redux';
 import {addItemsToCart, removeItemsFromCart} from '../../actions/CartAction';
 import {useState} from 'react';
 import Colors from '../../utils/Colors';
-import { showToast } from '../../helpers/ShowToast';
-import { deviceWidth } from '../../helpers/Dimensions';
+import {showToast} from '../../helpers/ShowToast';
+import {deviceWidth} from '../../helpers/Dimensions';
 
 export default function CartCard(props) {
-  const {product, showEditOptions} = props
+  const {product, showEditOptions} = props;
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(product.quantity);
   const deleteItemHandler = () => {
     dispatch(removeItemsFromCart(product.product));
   };
-  const {cartItems} = useSelector(state => state.cart)
+  const {cartItems} = useSelector(state => state.cart);
 
   const increaseQuanity = () => {
     if (product.stock <= quantity) {
@@ -26,20 +27,28 @@ export default function CartCard(props) {
       return;
     }
 
+    if (product.maxOrderQuantity && quantity >= product.maxOrderQuantity) {
+      showToast(
+        'info',
+        `You can only order ${product.maxOrderQuantity} units of ${product.name} at a time.`,
+      );
+      return;
+    }
+
     setQuantity(quantity + 1);
     dispatch(addItemsToCart(product.product, quantity + 1));
   };
 
   useEffect(() => {
     cartItems.map(item => {
-      item.product === product.product ? setQuantity(item.quantity) : null
-    })
-  }, [cartItems])
+      item.product === product.product ? setQuantity(item.quantity) : null;
+    });
+  }, [cartItems]);
 
   const decreaseQuanity = () => {
     if (quantity <= 0) {
-      setQuantity(0)
-      return
+      setQuantity(0);
+      return;
     }
     setQuantity(quantity - 1);
     dispatch(addItemsToCart(product.product, quantity - 1));
@@ -62,54 +71,68 @@ export default function CartCard(props) {
           source={{uri: product.image}}
           style={{height: 55, width: 55, borderRadius: 100, marginRight: 16}}
         />
-        <View style={{ width: deviceWidth * 0.55 }}>
+        <View style={{width: deviceWidth * 0.55}}>
           <Text style={{fontSize: 19, fontWeight: '600'}}>{product.name}</Text>
 
           {/* Add To Cart Button */}
-          {
-            showEditOptions === false ? null : <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginTop: 7,
-            }}>
-            <TouchableOpacity
-              onPress={decreaseQuanity}
+          {showEditOptions === false ? null : (
+            <View
               style={{
-                borderTopLeftRadius: 4,
-                borderBottomLeftRadius: 4,
-                borderColor: Colors.PRIMARY,
-                borderWidth: 1,
-                backgroundColor: Colors.PRIMARY,
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginTop: 7,
               }}>
-              <Text style={{color: Colors.WHITE, paddingHorizontal: 4, fontSize: 17}}>-</Text>
-            </TouchableOpacity>
-            <Text
-              style={{
-                color: Colors.PRIMARY,
-                textAlign: 'center',
-                width: 25,
-                borderTopWidth: 1,
-                borderBottomWidth: 1,
-                borderColor: Colors.PRIMARY,
-                fontSize: 17
-              }}>
-              {quantity}
-            </Text>
-            <TouchableOpacity
-              onPress={increaseQuanity}
-              style={{
-                borderTopRightRadius: 4,
-                borderBottomRightRadius: 4,
-                borderColor: Colors.PRIMARY,
-                borderWidth: 1,
-                backgroundColor: Colors.PRIMARY,
-              }}>
-              <Text style={{color: Colors.WHITE, paddingHorizontal: 4, fontSize: 17}}>+</Text>
-            </TouchableOpacity>
-          </View>
-          }
+              <TouchableOpacity
+                onPress={decreaseQuanity}
+                style={{
+                  borderTopLeftRadius: 4,
+                  borderBottomLeftRadius: 4,
+                  borderColor: Colors.PRIMARY,
+                  borderWidth: 1,
+                  backgroundColor: Colors.PRIMARY,
+                }}>
+                <Text
+                  style={{
+                    color: Colors.WHITE,
+                    paddingHorizontal: 4,
+                    fontSize: 17,
+                  }}>
+                  -
+                </Text>
+              </TouchableOpacity>
+              <Text
+                style={{
+                  color: Colors.PRIMARY,
+                  textAlign: 'center',
+                  width: 25,
+                  borderTopWidth: 1,
+                  borderBottomWidth: 1,
+                  borderColor: Colors.PRIMARY,
+                  fontSize: 17,
+                }}>
+                {quantity}
+              </Text>
+              <TouchableOpacity
+                onPress={increaseQuanity}
+                style={{
+                  borderTopRightRadius: 4,
+                  borderBottomRightRadius: 4,
+                  borderColor: Colors.PRIMARY,
+                  borderWidth: 1,
+                  backgroundColor: Colors.PRIMARY,
+                }}>
+                <Text
+                  style={{
+                    color: Colors.WHITE,
+                    paddingHorizontal: 4,
+                    fontSize: 17,
+                  }}>
+                  +
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
       </View>
       <View
@@ -121,11 +144,11 @@ export default function CartCard(props) {
           paddingVertical: 4,
         }}>
         <Text style={{fontSize: 17}}>₹ {product.price * product.quantity}</Text>
-        {
-          showEditOptions === false ? null : <TouchableOpacity onPress={deleteItemHandler}>
-          <Icon name="delete-outline" size={19} color="red" />
-        </TouchableOpacity>
-        }
+        {showEditOptions === false ? null : (
+          <TouchableOpacity onPress={deleteItemHandler}>
+            <Icon name="delete-outline" size={19} color="red" />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

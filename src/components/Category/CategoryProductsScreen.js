@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {ScrollView, View, Text, TouchableOpacity, Image} from 'react-native';
 import ProductCard from '../Products/ProductCard';
@@ -37,7 +39,7 @@ const CategoryProductsScreen = ({products, categoryId}) => {
         showsHorizontalScrollIndicator={false}>
         {subCategories.map((subCategory, index) => (
           <TouchableOpacity
-          key={index}
+            key={index}
             style={{
               minWidth: 50,
               maxWidth: 80,
@@ -105,7 +107,12 @@ const CategoryProductsScreen = ({products, categoryId}) => {
             </Text>
           ) : (
             productsToDisplay.map(product => (
-              <ProductCard categoryId={categoryId} key={product._id} product={product} />
+              <ProductCard
+                categoryId={categoryId}
+                key={product._id}
+                product={product}
+                products={products}
+              />
             ))
           )}
         </View>

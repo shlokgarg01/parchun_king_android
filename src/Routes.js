@@ -30,25 +30,26 @@ import CategoryProducts from './screens/Category/CategoryProducts';
 import SearchHeader from './components/SearchHeader';
 import Checkout from './screens/Cart/Checkout';
 import OrderConfirmation from './screens/Cart/OrderConfirmation';
+import CategoryProductsScreen from './components/Category/CategoryProductsScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const HomeTabScreen = ({navigation}) => {
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('tabPress', e => {
-      // Check if the Home tab is pressed
-      if (e.target.split('-')[0] === 'hometab') {
-        // Reset the stack to the first screen (Product)
-        navigation.navigate('tabnav', {
-          screen: 'hometab',
-          params: {screen: 'home'},
-        });
-      }
-    });
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener('tabPress', e => {
+  //     // Check if the Home tab is pressed
+  //     if (e.target.split('-')[0] === 'hometab') {
+  //       // Reset the stack to the first screen (Product)
+  //       navigation.navigate('tabnav', {
+  //         screen: 'hometab',
+  //         params: {screen: 'home'},
+  //       });
+  //     }
+  //   });
 
-    return unsubscribe;
-  }, [navigation]);
+  //   return unsubscribe;
+  // }, [navigation]);
 
   return (
     <Tab.Navigator screenOptions={{tabBarStyle: {display: 'none'}}}>
@@ -77,19 +78,19 @@ const HomeTabScreen = ({navigation}) => {
 };
 
 const CategoryTabScreen = ({navigation}) => {
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('tabPress', e => {
-      if (e.target.split('-')[0] === 'categorytab') {
-        // Reset the stack to the first screen (Product)
-        navigation.navigate('tabnav', {
-          screen: 'categorytab',
-          params: {screen: 'category'},
-        });
-      }
-    });
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener('tabPress', e => {
+  //     if (e.target.split('-')[0] === 'categorytab') {
+  //       // Reset the stack to the first screen (Product)
+  //       navigation.navigate('tabnav', {
+  //         screen: 'categorytab',
+  //         params: {screen: 'category'},
+  //       });
+  //     }
+  //   });
 
-    return unsubscribe;
-  }, [navigation]);
+  //   return unsubscribe;
+  // }, [navigation]);
 
   return (
     <Tab.Navigator screenOptions={{tabBarStyle: {display: 'none'}}}>
@@ -101,6 +102,11 @@ const CategoryTabScreen = ({navigation}) => {
       <Tab.Screen
         name="categoryproducts"
         component={CategoryProducts}
+        options={() => headerOptions('Products')}
+      />
+      <Tab.Screen
+        name="categoryproductscreen"
+        component={CategoryProductsScreen}
         options={() => headerOptions('Products')}
       />
       <Tab.Screen

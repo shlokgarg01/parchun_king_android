@@ -14,6 +14,7 @@ import {
 export default function Signup({navigation, route}) {
   const [name, setName] = useState();
   const [email, setEmail] = useState();
+  const [pincode, setPincode] = useState();
   const contactNumber = route.params.contactNumber;
   const otp = route.params.otp;
 
@@ -33,7 +34,15 @@ export default function Signup({navigation, route}) {
   }, [dispatch, error, isAuthenticated]);
 
   const signupHandler = () => {
-    dispatch(EnterDetailsOPTPRegistration({name, email, contactNumber, otp}));
+    dispatch(
+      EnterDetailsOPTPRegistration({
+        name,
+        email,
+        contactNumber,
+        otp,
+        pincode: parseInt(pincode),
+      }),
+    );
   };
 
   return (
@@ -58,6 +67,13 @@ export default function Signup({navigation, route}) {
           label="Contact Number"
           value={contactNumber}
           editable={false}
+        />
+        <InputGroup
+          label="Pincode"
+          placeholder="Please enter your pincode"
+          value={pincode}
+          type="number-pad"
+          onChange={val => setPincode(val)}
         />
         <Btn onClick={signupHandler} label="SIGNUP" />
       </View>

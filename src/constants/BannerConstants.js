@@ -1,0 +1,5 @@
+export const BANNERS_REQUEST = 'BANNERS_REQUEST';
+export const BANNERS_SUCCESS = 'BANNERS_SUCCESS';
+export const BANNERS_FAIL = 'BANNERS_FAIL';
+
+export const CLEAR_ERRORS = 'CLEAR_ERRORS';

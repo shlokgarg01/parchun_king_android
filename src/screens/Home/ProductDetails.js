@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   View,
   Text,
@@ -5,7 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
-  BackHandler
+  BackHandler,
 } from 'react-native';
 import React, {useState} from 'react';
 import HomeStyles from './HomeStyles';
@@ -19,10 +20,10 @@ import HomeComponentStyles from '../../components/Home/HomeComponentStyles';
 import ProductCard from '../../components/Products/ProductCard';
 import {getsuggestedProducts} from '../../actions/ProductActions';
 import Loader from '../../components/Loader';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 export default function ProductDetails(props) {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const product = props.route.params.product;
   const categoryId = props.route.params.categoryId;
@@ -30,7 +31,7 @@ export default function ProductDetails(props) {
   const {products, loading, error} = useSelector(
     state => state.suggestedProducts,
   );
-  const {cartItems} = useSelector(state => state.cart)
+  const {cartItems} = useSelector(state => state.cart);
 
   useEffect(() => {
     setQuantity(0);
@@ -42,26 +43,48 @@ export default function ProductDetails(props) {
   }, [product, dispatch, error]);
 
   useEffect(() => {
-    cartItems.map(item => {
-      item.product === product._id ? setQuantity(item.quantity) : null
-    })
-  }, [cartItems])
+    const backAction = () => {
+      if (categoryId) {
+        navigation.goBack();
+        navigation.navigate('tabnav', {
+          screen: 'categorytab',
+          params: {
+            screen: 'categoryproducts',
+            params: {categoryId, navigation},
+          },
+        });
+      }
+    };
 
-  handleBackButtonClick = () => {
-    if(categoryId !== '') {
-      navigation.replace('tabnav', {
-        screen: 'categorytab',
-        params: {
-          screen: 'categoryproducts',
-          params: {categoryId},
-        },
-      })
-    } 
-    // else {
-    //   console.log("ELSE")
-    //   navigation.goBack();
-    // } 
-  }
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
+  useEffect(() => {
+    cartItems.map(item => {
+      item.product === product._id ? setQuantity(item.quantity) : null;
+    });
+  }, [cartItems, product]);
+
+  // const handleBackButtonClick = () => {
+  //   if (categoryId !== '') {
+  //     navigation.replace('tabnav', {
+  //       screen: 'categorytab',
+  //       params: {
+  //         screen: 'categoryproducts',
+  //         params: {categoryId},
+  //       },
+  //     });
+  //   }
+  // else {
+  //   console.log("ELSE")
+  //   navigation.goBack();
+  // }
+  // };
 
   // useEffect(() => {
   //   BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
@@ -69,11 +92,19 @@ export default function ProductDetails(props) {
   //   return () => BackHandler.removeEventListener("hardwareBackPress", handleBackButtonClick);
   // }, [])
 
-  const increaseQuanity = () => {
+  const increaseQuantity = () => {
     if (product.stock <= quantity) {
       showToast(
         'info',
         `We only have ${product.stock} units left for ${product.name}`,
+      );
+      return;
+    }
+
+    if (product.maxOrderQuantity && quantity >= product.maxOrderQuantity) {
+      showToast(
+        'info',
+        `You can only order ${product.maxOrderQuantity} units of ${product.name} at a time.`,
       );
       return;
     }
@@ -83,7 +114,7 @@ export default function ProductDetails(props) {
     showToast('success', 'Item Added');
   };
 
-  const decreaseQuanity = () => {
+  const decreaseQuantity = () => {
     setQuantity(quantity - 1);
     dispatch(addItemsToCart(product._id, quantity - 1));
     showToast('success', 'Cart Updated');
@@ -137,7 +168,7 @@ export default function ProductDetails(props) {
         {/* Add To Cart */}
         {quantity === 0 ? (
           <TouchableOpacity
-            onPress={increaseQuanity}
+            onPress={increaseQuantity}
             style={ComponentStyles.btnContainer}>
             <Text style={ComponentStyles.btnLabel}>Add To Cart</Text>
           </TouchableOpacity>
@@ -152,7 +183,7 @@ export default function ProductDetails(props) {
               alignItems: 'center',
             }}>
             <TouchableOpacity
-              onPress={decreaseQuanity}
+              onPress={decreaseQuantity}
               style={{
                 borderTopLeftRadius: 4,
                 borderBottomLeftRadius: 4,
@@ -184,7 +215,7 @@ export default function ProductDetails(props) {
               {quantity}
             </Text>
             <TouchableOpacity
-              onPress={increaseQuanity}
+              onPress={increaseQuantity}
               style={{
                 borderTopRightRadius: 4,
                 borderBottomRightRadius: 4,

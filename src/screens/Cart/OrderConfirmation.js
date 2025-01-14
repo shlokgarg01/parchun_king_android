@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {View, ScrollView, Text, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import {deviceHeight} from '../../helpers/Dimensions';
@@ -15,10 +16,10 @@ import {clearErrors, createOrder} from '../../actions/OrderActions';
 import {RESET_NEW_ORDER} from '../../constants/OrderConstants';
 import {RESET_CART} from '../../constants/CartConstants';
 import {RESET_COUPON} from '../../constants/couponConstants';
-import PhonePePaymentSDK from 'react-native-phonepe-pg';
-import {encode} from 'base-64';
-import {sha256} from 'react-native-sha256';
-import axiosInstance, {BASE_URL} from '../../utils/Axios';
+// import PhonePePaymentSDK from 'react-native-phonepe-pg';
+// import {encode} from 'base-64';
+// import {sha256} from 'react-native-sha256';
+// import axiosInstance, {BASE_URL} from '../../utils/Axios';
 import Enums from '../../utils/Enums';
 
 export default function OrderConfirmation(props) {
@@ -26,8 +27,8 @@ export default function OrderConfirmation(props) {
   const dispatch = useDispatch();
 
   const {error} = useSelector(state => state.newOrder);
-  const {user} = useSelector(state => state.user);
-  const [isCOD, setIsCOD] = useState(false);
+  // const {user} = useSelector(state => state.user);
+  const [isCOD, setIsCOD] = useState(true);
   const {orderPrices, orderItems, shippingAddress, address} =
     props.route.params;
 
@@ -53,84 +54,85 @@ export default function OrderConfirmation(props) {
       dispatch({type: RESET_COUPON});
       showToast('success', 'Order Placed!');
       navigation.reset({index: 1, routes: [{name: 'tabnav'}]});
-    } else {
-      PhonePePaymentSDK.init(
-        'UAT', // environment - PRODUCTION
-        'PGTESTPAYUAT133', // merchantId - M15F3PTMWJNE - PGTESTPAYUAT133
-        'ksejndfksedc', // appId - 3c970ac1a3bd4a569b21332a68784bc5
-        true,
-      )
-        .then(res => {
-          const params = {
-            name: user?.name,
-            amount: order.itemsPrice,
-            number: user.contactNumber,
-            MUID: 'MUID' + Date.now(),
-            transactionId: 'Parchun_King_' + Date.now(),
-          };
-          const data = {
-            merchantId: 'PGTESTPAYUAT133', // - M15F3PTMWJNE
-            merchantTransactionId: params.transactionId,
-            merchantUserId: params.MUID,
-            name: params.name,
-            amount: params.amount * 100,
-            redirectUrl: `${BASE_URL}/api/v1/payment_status`, // @TODO
-            callbackUrl: `${BASE_URL}/api/v1/payment_status`, // @TODO
-            redirectMode: 'POST',
-            mobileNumber: params.number,
-            paymentInstrument: {
-              type: 'PAY_PAGE',
-            },
-          };
-          const salt_key = 'b43a021e-2f17-4654-9e70-8410bb7a9715'; // salt_key - 9935b12d-2cde-4fd3-ba89-4d10217bf4f2
-          const payload = JSON.stringify(data);
-          const payloadMain = encode(payload);
-          const keyIndex = 1; // - 3
-          const string = payloadMain + '/pg/v1/pay' + salt_key;
-          sha256(string).then(res => {
-            const checksum = res + '###' + keyIndex;
-            PhonePePaymentSDK.startPGTransaction(
-              payloadMain,
-              checksum,
-              '/pg/v1/pay',
-              {
-                accept: 'application/json',
-                'Content-Type': 'application/json',
-                'X-VERIFY': checksum,
-              },
-              null,
-              null,
-            )
-              .then(res => {
-                if (res.status === 'SUCCESS') {
-                  order.paymentInfo = {
-                    transactionId: params.transactionId,
-                    status: Enums.PAYMENT_STATUS.SUCCEEDED,
-                  };
-
-                  dispatch(createOrder(order));
-                  axiosInstance.get(
-                    `${BASE_URL}/api/v1/payment_status/${params.transactionId}`,
-                  );
-                  dispatch({type: RESET_NEW_ORDER});
-                  dispatch({type: RESET_CART});
-                  dispatch({type: RESET_COUPON});
-                  navigation.reset({index: 1, routes: [{name: 'tabnav'}]});
-                }
-              })
-              .catch(err => {
-                showToast(
-                  'error',
-                  'Could not complete the payment. Please try again.',
-                );
-                console.log('Error while making order payment ', err);
-              });
-          });
-        })
-        .catch(err =>
-          console.log('Error while initializing order payment ', err),
-        );
     }
+    // else {
+    //   PhonePePaymentSDK.init(
+    //     'UAT', // environment - PRODUCTION
+    //     'PGTESTPAYUAT133', // merchantId - M15F3PTMWJNE - PGTESTPAYUAT133
+    //     'ksejndfksedc', // appId - 3c970ac1a3bd4a569b21332a68784bc5
+    //     true,
+    //   )
+    //     .then(res => {
+    //       const params = {
+    //         name: user?.name,
+    //         amount: order.itemsPrice,
+    //         number: user.contactNumber,
+    //         MUID: 'MUID' + Date.now(),
+    //         transactionId: 'Parchun_King_' + Date.now(),
+    //       };
+    //       const data = {
+    //         merchantId: 'PGTESTPAYUAT133', // - M15F3PTMWJNE
+    //         merchantTransactionId: params.transactionId,
+    //         merchantUserId: params.MUID,
+    //         name: params.name,
+    //         amount: params.amount * 100,
+    //         redirectUrl: `${BASE_URL}/api/v1/payment_status`, // @TODO
+    //         callbackUrl: `${BASE_URL}/api/v1/payment_status`, // @TODO
+    //         redirectMode: 'POST',
+    //         mobileNumber: params.number,
+    //         paymentInstrument: {
+    //           type: 'PAY_PAGE',
+    //         },
+    //       };
+    //       const salt_key = 'b43a021e-2f17-4654-9e70-8410bb7a9715'; // salt_key - 9935b12d-2cde-4fd3-ba89-4d10217bf4f2
+    //       const payload = JSON.stringify(data);
+    //       const payloadMain = encode(payload);
+    //       const keyIndex = 1; // - 3
+    //       const string = payloadMain + '/pg/v1/pay' + salt_key;
+    //       sha256(string).then(res => {
+    //         const checksum = res + '###' + keyIndex;
+    //         PhonePePaymentSDK.startPGTransaction(
+    //           payloadMain,
+    //           checksum,
+    //           '/pg/v1/pay',
+    //           {
+    //             accept: 'application/json',
+    //             'Content-Type': 'application/json',
+    //             'X-VERIFY': checksum,
+    //           },
+    //           null,
+    //           null,
+    //         )
+    //           .then(res => {
+    //             if (res.status === 'SUCCESS') {
+    //               order.paymentInfo = {
+    //                 transactionId: params.transactionId,
+    //                 status: Enums.PAYMENT_STATUS.SUCCEEDED,
+    //               };
+
+    //               dispatch(createOrder(order));
+    //               axiosInstance.get(
+    //                 `${BASE_URL}/api/v1/payment_status/${params.transactionId}`,
+    //               );
+    //               dispatch({type: RESET_NEW_ORDER});
+    //               dispatch({type: RESET_CART});
+    //               dispatch({type: RESET_COUPON});
+    //               navigation.reset({index: 1, routes: [{name: 'tabnav'}]});
+    //             }
+    //           })
+    //           .catch(err => {
+    //             showToast(
+    //               'error',
+    //               'Could not complete the payment. Please try again.',
+    //             );
+    //             console.log('Error while making order payment ', err);
+    //           });
+    //       });
+    //     })
+    //     .catch(err =>
+    //       console.log('Error while initializing order payment ', err),
+    //     );
+    // }
   };
 
   return (

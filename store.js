@@ -2,7 +2,7 @@ import {createStore, combineReducers, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import {updateUserReducer, userReducer} from './src/reducers/UserReducers';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { persistStore, persistReducer } from 'redux-persist'
+import {persistStore, persistReducer} from 'redux-persist';
 import {myOrdersReducer, newOrderReducer} from './src/reducers/OrderReducer';
 import {
   addressDetailsReducer,
@@ -20,12 +20,13 @@ import {
 } from './src/reducers/ProductReducer';
 import {cartReducer} from './src/reducers/CartReducer';
 import {allCategoriesReducer} from './src/reducers/CategoryReducer';
-import { validateCouponReducer } from './src/reducers/CouponReducer';
+import {validateCouponReducer} from './src/reducers/CouponReducer';
+import {getBannersReducer} from './src/reducers/BannerReducer';
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-}
+};
 
 const reducer = combineReducers({
   user: userReducer,
@@ -47,13 +48,12 @@ const reducer = combineReducers({
   suggestedProducts: suggestedProductsReducer,
 
   cart: cartReducer,
-
   categories: allCategoriesReducer,
-
-  coupon: validateCouponReducer
+  coupon: validateCouponReducer,
+  banners: getBannersReducer,
 });
 
-const persistedReducer = persistReducer(persistConfig, reducer)
+const persistedReducer = persistReducer(persistConfig, reducer);
 
 const initialState = {
   cart: {
@@ -69,5 +69,5 @@ const store = createStore(
   applyMiddleware(...middleware),
 );
 
-export const persistor = persistStore(store)
+export const persistor = persistStore(store);
 export default store;

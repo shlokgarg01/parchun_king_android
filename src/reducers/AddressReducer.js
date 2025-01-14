@@ -1,4 +1,24 @@
-import { ADDRESS_DETAILS_FAIL, ADDRESS_DETAILS_REQUEST, ADDRESS_DETAILS_SUCCESS, CLEAR_ERRORS, DELETE_ADDRESS_FAIL, DELETE_ADDRESS_REQUEST, DELETE_ADDRESS_RESET, DELETE_ADDRESS_SUCCESS, MY_ADDRESSES_FAIL, MY_ADDRESSES_REQUEST, MY_ADDRESSES_SUCCESS, NEW_ADDRESS_FAIL, NEW_ADDRESS_REQUEST, NEW_ADDRESS_RESET, NEW_ADDRESS_SUCCESS, UPDATE_ADDRESS_FAIL, UPDATE_ADDRESS_REQUEST, UPDATE_ADDRESS_RESET, UPDATE_ADDRESS_SUCCESS } from "../constants/AddressConstants";
+import {
+  ADDRESS_DETAILS_FAIL,
+  ADDRESS_DETAILS_REQUEST,
+  ADDRESS_DETAILS_SUCCESS,
+  CLEAR_ERRORS,
+  DELETE_ADDRESS_FAIL,
+  DELETE_ADDRESS_REQUEST,
+  DELETE_ADDRESS_RESET,
+  DELETE_ADDRESS_SUCCESS,
+  MY_ADDRESSES_FAIL,
+  MY_ADDRESSES_REQUEST,
+  MY_ADDRESSES_SUCCESS,
+  NEW_ADDRESS_FAIL,
+  NEW_ADDRESS_REQUEST,
+  NEW_ADDRESS_RESET,
+  NEW_ADDRESS_SUCCESS,
+  UPDATE_ADDRESS_FAIL,
+  UPDATE_ADDRESS_REQUEST,
+  UPDATE_ADDRESS_RESET,
+  UPDATE_ADDRESS_SUCCESS,
+} from '../constants/AddressConstants';
 
 export const myAddressesReducer = (state = {addresses: []}, action) => {
   switch (action.type) {
@@ -27,7 +47,7 @@ export const myAddressesReducer = (state = {addresses: []}, action) => {
   }
 };
 
-export const addressDetailsReducer = (state = { address: {} }, action) => {
+export const addressDetailsReducer = (state = {address: {}}, action) => {
   switch (action.type) {
     case ADDRESS_DETAILS_REQUEST:
       return {
@@ -54,7 +74,7 @@ export const addressDetailsReducer = (state = { address: {} }, action) => {
   }
 };
 
-export const addressReducer = (state = { address: {} }, action) => {
+export const addressReducer = (state = {address: {}}, action) => {
   switch (action.type) {
     case DELETE_ADDRESS_REQUEST:
     case UPDATE_ADDRESS_REQUEST:
@@ -101,7 +121,7 @@ export const addressReducer = (state = { address: {} }, action) => {
   }
 };
 
-export const newAddressReducer = (state = { address: {} }, action) => {
+export const newAddressReducer = (state = {address: {}}, action) => {
   switch (action.type) {
     case NEW_ADDRESS_REQUEST:
       return {
