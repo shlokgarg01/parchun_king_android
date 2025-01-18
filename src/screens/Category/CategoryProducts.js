@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';

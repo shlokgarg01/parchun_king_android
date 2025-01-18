@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-native/no-inline-styles */
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
@@ -5,12 +6,12 @@ import ProductStyles from './ProductStyles';
 import Colors from '../../utils/Colors';
 import {showToast} from '../../helpers/ShowToast';
 import {useDispatch, useSelector} from 'react-redux';
-import {addItemsToCart, removeItemsFromCart} from '../../actions/CartAction';
+import {addItemsToCart} from '../../actions/CartAction';
 import {useNavigation} from '@react-navigation/native';
 
-export default function ProductCard({product, categoryId}) {
+export default function ProductCard({product, categoryId, navigation}) {
   const dispatch = useDispatch();
-  const navigation = useNavigation();
+  const nav = navigation || useNavigation();
   const {cartItems} = useSelector(state => state.cart);
   const [quantity, setQuantity] = useState(0);
 
@@ -18,34 +19,7 @@ export default function ProductCard({product, categoryId}) {
     cartItems.map(item => {
       item.product === product._id ? setQuantity(item.quantity) : null;
     });
-  }, [cartItems]);
-
-  // useEffect(() => {
-  //   if (!initialState) return;
-
-  //   const backAction = () => {
-  //     if (categoryId) {
-  //       setInitialState(false);
-  //       console.log('Back button pressed, with category Id - ', categoryId);
-  //       // navigation.navigate('tabnav', {
-  //       //   screen: 'categorytab',
-  //       //   params: {
-  //       //     screen: 'categoryproductscreen',
-  //       //     params: {products, categoryId},
-  //       //   },
-  //       // });
-  //     } else {
-  //       console.log('Back button pressed, no category Id');
-  //     }
-  //   };
-
-  //   const backHandler = BackHandler.addEventListener(
-  //     'hardwareBackPress',
-  //     backAction,
-  //   );
-
-  //   return () => backHandler.remove();
-  // }, []);
+  }, [cartItems, product._id]);
 
   const increaseQuanity = () => {
     if (product.stock <= quantity) {
@@ -78,11 +52,11 @@ export default function ProductCard({product, categoryId}) {
   return (
     <TouchableOpacity
       onPress={() =>
-        navigation.navigate('tabnav', {
+        nav.navigate('tabnav', {
           screen: 'categorytab',
           params: {
             screen: 'productdetails',
-            params: {product, categoryId},
+            params: {product, categoryId, navigation: nav},
           },
         })
       }

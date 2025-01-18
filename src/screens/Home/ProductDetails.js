@@ -6,7 +6,6 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
-  BackHandler,
 } from 'react-native';
 import React, {useState} from 'react';
 import HomeStyles from './HomeStyles';
@@ -20,13 +19,11 @@ import HomeComponentStyles from '../../components/Home/HomeComponentStyles';
 import ProductCard from '../../components/Products/ProductCard';
 import {getsuggestedProducts} from '../../actions/ProductActions';
 import Loader from '../../components/Loader';
-import {useNavigation} from '@react-navigation/native';
 
 export default function ProductDetails(props) {
-  const navigation = useNavigation();
   const dispatch = useDispatch();
   const product = props.route.params.product;
-  const categoryId = props.route.params.categoryId;
+  // const categoryId = props.route.params.categoryId;
   const [quantity, setQuantity] = useState(0);
   const {products, loading, error} = useSelector(
     state => state.suggestedProducts,
@@ -43,54 +40,10 @@ export default function ProductDetails(props) {
   }, [product, dispatch, error]);
 
   useEffect(() => {
-    const backAction = () => {
-      if (categoryId) {
-        navigation.goBack();
-        navigation.navigate('tabnav', {
-          screen: 'categorytab',
-          params: {
-            screen: 'categoryproducts',
-            params: {categoryId, navigation},
-          },
-        });
-      }
-    };
-
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    );
-
-    return () => backHandler.remove();
-  }, []);
-
-  useEffect(() => {
     cartItems.map(item => {
       item.product === product._id ? setQuantity(item.quantity) : null;
     });
   }, [cartItems, product]);
-
-  // const handleBackButtonClick = () => {
-  //   if (categoryId !== '') {
-  //     navigation.replace('tabnav', {
-  //       screen: 'categorytab',
-  //       params: {
-  //         screen: 'categoryproducts',
-  //         params: {categoryId},
-  //       },
-  //     });
-  //   }
-  // else {
-  //   console.log("ELSE")
-  //   navigation.goBack();
-  // }
-  // };
-
-  // useEffect(() => {
-  //   BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
-
-  //   return () => BackHandler.removeEventListener("hardwareBackPress", handleBackButtonClick);
-  // }, [])
 
   const increaseQuantity = () => {
     if (product.stock <= quantity) {
@@ -120,13 +73,6 @@ export default function ProductDetails(props) {
     showToast('success', 'Cart Updated');
   };
 
-  // getPreviousRoute = () => {
-  //   const routes = navigation.getState()?.routes;
-  //   const prevRoute = routes[routes.length - 2];
-  //   console.log(routes, prevRoute)
-  //   return prevRoute
-  // }
-
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -137,20 +83,6 @@ export default function ProductDetails(props) {
       />
       <View style={{paddingHorizontal: 20, paddingVertical: 10}}>
         <Text style={HomeStyles.productDetailsHeading}>{product.name}</Text>
-        {/* <View style={HomeStyles.productDetailsSubContainer}>
-          <Text style={HomeStyles.productDetailsmutedText}>Rating</Text>
-          <Rating
-            ratingCount={5}
-            jumpValue={0.5}
-            fractions={1}
-            startingValue={product.ratings}
-            readonly
-            imageSize={16}
-            ratingBackgroundColor="green"
-            tintColor="#f2f0f0"
-            ratingColor="black"
-          />
-        </View> */}
         <Text
           style={{
             color: product.stock === 0 ? Colors.RED : Colors.DARK_GREEN,

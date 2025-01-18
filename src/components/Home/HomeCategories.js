@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
 import React, {useEffect} from 'react';
 import HomeComponentStyles from './HomeComponentStyles';
@@ -6,6 +7,7 @@ import {clearErrors, getAllCategories} from '../../actions/CategoryAction';
 import Loader from '../Loader';
 import CategoryCard from '../../components/Category/CategoryCard';
 import {useNavigation} from '@react-navigation/native';
+import {showToast} from '../../helpers/ShowToast';
 
 export default function HomeCategories() {
   const dispatch = useDispatch();
@@ -45,7 +47,11 @@ export default function HomeCategories() {
             <View
               style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap'}}>
               {categories.slice(0, 8).map(category => (
-                <CategoryCard key={category._id} category={category} />
+                <CategoryCard
+                  key={category._id}
+                  category={category}
+                  navigation={navigation}
+                />
               ))}
             </View>
           </ScrollView>

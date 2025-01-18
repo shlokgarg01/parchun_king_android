@@ -9,8 +9,10 @@ import Loader from '../../components/Loader';
 import CategoryCard from '../../components/Category/CategoryCard';
 import Styles from '../Styles';
 import ViewCart from '../../components/Cart/ViewCart';
+import {useNavigation} from '@react-navigation/native';
 
 export default function Category() {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const {loading, error, categories} = useSelector(state => state.categories);
   const {cartItems} = useSelector(state => state.cart);
@@ -40,7 +42,11 @@ export default function Category() {
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={Styles.container}>
               {categories.map(category => (
-                <CategoryCard key={category._id} category={category} />
+                <CategoryCard
+                  key={category._id}
+                  category={category}
+                  navigation={navigation}
+                />
               ))}
             </View>
           </ScrollView>

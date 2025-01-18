@@ -1,12 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
 import {Text, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
-import {useNavigation} from '@react-navigation/native';
 import ProductStyles from '../Products/ProductStyles';
 
-export default function CategoryCard({category}) {
-  const navigation = useNavigation();
-
+export default function CategoryCard({category, navigation}) {
   return (
     <TouchableOpacity
       onPress={() =>
@@ -14,7 +11,7 @@ export default function CategoryCard({category}) {
           screen: 'categorytab',
           params: {
             screen: 'categoryproducts',
-            params: {categoryId: category._id},
+            params: {categoryId: category._id, navigation},
           },
         })
       }

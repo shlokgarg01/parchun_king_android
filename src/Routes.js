@@ -33,23 +33,26 @@ import OrderConfirmation from './screens/Cart/OrderConfirmation';
 import CategoryProductsScreen from './components/Category/CategoryProductsScreen';
 
 const Stack = createNativeStackNavigator();
+const CategoryStack = createNativeStackNavigator();
+const CartStack = createNativeStackNavigator();
+const AccountStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const HomeTabScreen = ({navigation}) => {
-  // useEffect(() => {
-  //   const unsubscribe = navigation.addListener('tabPress', e => {
-  //     // Check if the Home tab is pressed
-  //     if (e.target.split('-')[0] === 'hometab') {
-  //       // Reset the stack to the first screen (Product)
-  //       navigation.navigate('tabnav', {
-  //         screen: 'hometab',
-  //         params: {screen: 'home'},
-  //       });
-  //     }
-  //   });
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('tabPress', e => {
+      // Check if the Home tab is pressed
+      if (e.target.split('-')[0] === 'hometab') {
+        // Reset the stack to the first screen (Product)
+        navigation.navigate('tabnav', {
+          screen: 'hometab',
+          params: {screen: 'home'},
+        });
+      }
+    });
 
-  //   return unsubscribe;
-  // }, [navigation]);
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <Tab.Navigator screenOptions={{tabBarStyle: {display: 'none'}}}>
@@ -78,38 +81,42 @@ const HomeTabScreen = ({navigation}) => {
 };
 
 const CategoryTabScreen = ({navigation}) => {
-  // useEffect(() => {
-  //   const unsubscribe = navigation.addListener('tabPress', e => {
-  //     if (e.target.split('-')[0] === 'categorytab') {
-  //       // Reset the stack to the first screen (Product)
-  //       navigation.navigate('tabnav', {
-  //         screen: 'categorytab',
-  //         params: {screen: 'category'},
-  //       });
-  //     }
-  //   });
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('tabPress', e => {
+      if (e.target.split('-')[0] === 'categorytab') {
+        // Reset the stack to the first screen (Product)
+        navigation.navigate('tabnav', {
+          screen: 'categorytab',
+          params: {screen: 'category'},
+        });
+      }
+    });
 
-  //   return unsubscribe;
-  // }, [navigation]);
+    return unsubscribe;
+  }, [navigation]);
 
   return (
-    <Tab.Navigator screenOptions={{tabBarStyle: {display: 'none'}}}>
-      <Tab.Screen
+    <CategoryStack.Navigator
+      screenOptions={{
+        tabBarStyle: {display: 'none'},
+        headerBackVisible: false,
+      }}>
+      <CategoryStack.Screen
         name="category"
         component={Category}
         options={() => headerOptions('Categories')}
       />
-      <Tab.Screen
+      <CategoryStack.Screen
         name="categoryproducts"
         component={CategoryProducts}
         options={() => headerOptions('Products')}
       />
-      <Tab.Screen
+      <CategoryStack.Screen
         name="categoryproductscreen"
         component={CategoryProductsScreen}
         options={() => headerOptions('Products')}
       />
-      <Tab.Screen
+      <CategoryStack.Screen
         name="productdetails"
         component={ProductDetails}
         options={() => headerOptions('Product Details')}
@@ -120,74 +127,76 @@ const CategoryTabScreen = ({navigation}) => {
           },
         })}
       />
-    </Tab.Navigator>
+    </CategoryStack.Navigator>
   );
 };
 
 const CartTabScreen = () => (
-  <Tab.Navigator screenOptions={{tabBarStyle: {display: 'none'}}}>
-    <Tab.Screen
+  <CartStack.Navigator
+    screenOptions={{tabBarStyle: {display: 'none'}, headerBackVisible: false}}>
+    <CartStack.Screen
       name="cart"
       component={Cart}
       options={() => headerOptions('My Cart')}
     />
-    <Tab.Screen
+    <CartStack.Screen
       name="checkout"
       component={Checkout}
       options={() => headerOptions('Checkout')}
     />
-    <Tab.Screen
+    <CartStack.Screen
       name="confirmorder"
       component={OrderConfirmation}
       options={() => headerOptions('Confirm Order')}
     />
-  </Tab.Navigator>
+  </CartStack.Navigator>
 );
 
 // My Account Tab
 const AccountTabScreen = () => (
-  <Tab.Navigator screenOptions={{tabBarStyle: {display: 'none'}}}>
-    <Tab.Screen
+  <AccountStack.Navigator
+    screenOptions={{tabBarStyle: {display: 'none'}, headerBackVisible: false}}>
+    <AccountStack.Screen
       name="account"
       component={MyAccount}
       options={() => headerOptions('My Account')}
     />
-    <Tab.Screen
+    <AccountStack.Screen
       name="editprofile"
       component={EditProfile}
       options={() => headerOptions('Edit Profile')}
     />
-    <Tab.Screen
+    <AccountStack.Screen
       name="myorders"
       component={MyOrders}
       options={() => headerOptions('My Orders')}
     />
-    <Tab.Screen
+    <AccountStack.Screen
       name="orderdetails"
       component={OrderDetails}
       options={() => headerOptions('Order Details')}
     />
-    <Tab.Screen
+    <AccountStack.Screen
       name="savedaddresses"
       component={SavedAddresses}
       options={() => headerOptions('Saved Addresses')}
     />
-    <Tab.Screen
+    <AccountStack.Screen
       name="helpcenter"
       component={HelpCenter}
       options={() => headerOptions('Help Center')}
     />
-    <Tab.Screen
+    <AccountStack.Screen
       name="updateaddress"
       component={UpdateAddress}
       options={() => headerOptions('Update Address')}
     />
-    <Tab.Screen
+    <AccountStack.Screen
       name="newaddress"
       component={NewAddress}
       options={() => headerOptions('New Address')}
     />
-  </Tab.Navigator>
+  </AccountStack.Navigator>
 );
 
 const headerOptions = title => ({
