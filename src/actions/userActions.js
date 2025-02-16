@@ -1,4 +1,4 @@
-import axiosInstance, { BASE_URL } from '../utils/Axios';
+import axiosInstance, {BASE_URL} from '../utils/Axios';
 import {
   CLEAR_ERRORS,
   LOAD_USER_FAIL,
@@ -140,7 +140,7 @@ export const EnterDetailsOPTPRegistration =
 export const logout = () => async dispatch => {
   try {
     await axiosInstance.get(`${BASE_URL}/api/v1/logout`);
-    await AsyncStorage.clear()
+    await AsyncStorage.clear();
     dispatch({type: LOGOUT_SUCCESS});
   } catch (error) {
     dispatch({
