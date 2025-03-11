@@ -67,7 +67,10 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Our app requires access to the microphone to record audio for voice commands and product search purpose.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>recognize speech</string>
+	<string>Our app uses speech recognition to convert your voice into text for improved user experience. For example, you can use voice commands to search products.</string>
+
 </dict>
 </plist>

@@ -1,6 +1,10 @@
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
-import {updateUserReducer, userReducer} from './src/reducers/UserReducers';
+import {
+  deleteUserReducer,
+  updateUserReducer,
+  userReducer,
+} from './src/reducers/UserReducers';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {persistStore, persistReducer} from 'redux-persist';
 import {myOrdersReducer, newOrderReducer} from './src/reducers/OrderReducer';
@@ -30,6 +34,7 @@ const persistConfig = {
 
 const reducer = combineReducers({
   user: userReducer,
+  deleteUser: deleteUserReducer,
   profile: updateUserReducer,
 
   myOrders: myOrdersReducer,

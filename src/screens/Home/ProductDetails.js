@@ -19,6 +19,7 @@ import HomeComponentStyles from '../../components/Home/HomeComponentStyles';
 import ProductCard from '../../components/Products/ProductCard';
 import {getsuggestedProducts} from '../../actions/ProductActions';
 import Loader from '../../components/Loader';
+import {useNavigation} from '@react-navigation/native';
 
 export default function ProductDetails(props) {
   const dispatch = useDispatch();
@@ -29,6 +30,8 @@ export default function ProductDetails(props) {
     state => state.suggestedProducts,
   );
   const {cartItems} = useSelector(state => state.cart);
+  const {isAuthenticated} = useSelector(state => state.user);
+  const navigation = useNavigation();
 
   useEffect(() => {
     setQuantity(0);
@@ -46,6 +49,11 @@ export default function ProductDetails(props) {
   }, [cartItems, product]);
 
   const increaseQuantity = () => {
+    if (!isAuthenticated) {
+      navigation.navigate('loginotp');
+      return;
+    }
+
     if (product.stock <= quantity) {
       showToast(
         'info',

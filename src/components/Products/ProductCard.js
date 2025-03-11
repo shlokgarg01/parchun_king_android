@@ -13,6 +13,7 @@ export default function ProductCard({product, categoryId, navigation}) {
   const dispatch = useDispatch();
   const nav = navigation || useNavigation();
   const {cartItems} = useSelector(state => state.cart);
+  const {isAuthenticated} = useSelector(state => state.user);
   const [quantity, setQuantity] = useState(0);
 
   useEffect(() => {
@@ -22,6 +23,11 @@ export default function ProductCard({product, categoryId, navigation}) {
   }, [cartItems, product._id]);
 
   const increaseQuanity = () => {
+    if (!isAuthenticated) {
+      nav.navigate('loginotp');
+      return;
+    }
+
     if (product.stock <= quantity) {
       showToast(
         'info',

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {View, Text} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import AuthStyles from './AuthStyles';
@@ -12,9 +13,7 @@ import {clearErrors, sendOPTPLogin} from '../../actions/userActions';
 export default function LoginOTP({navigation}) {
   const [contactNumber, setContactNumber] = useState();
   const dispatch = useDispatch();
-  const {error, isAuthenticated, loading, otpSent} = useSelector(
-    state => state.user,
-  );
+  const {error, isAuthenticated, otpSent} = useSelector(state => state.user);
 
   useEffect(() => {
     if (isAuthenticated) {

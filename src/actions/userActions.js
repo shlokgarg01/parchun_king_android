@@ -1,6 +1,9 @@
 import axiosInstance, {BASE_URL} from '../utils/Axios';
 import {
   CLEAR_ERRORS,
+  DELETE_USER_FAIL,
+  DELETE_USER_REQUEST,
+  DELETE_USER_SUCCESS,
   LOAD_USER_FAIL,
   LOAD_USER_REQUEST,
   LOAD_USER_SUCCESS,
@@ -9,6 +12,7 @@ import {
   LOGIN_VIA_OTP_SUCCESS,
   LOGOUT_FAIL,
   LOGOUT_SUCCESS,
+  LOGOUT_REQUEST,
   SEND_LOGIN_OTP_FAIL,
   SEND_LOGIN_OTP_REQUEST,
   SEND_LOGIN_OTP_SUCCESS,
@@ -139,6 +143,7 @@ export const EnterDetailsOPTPRegistration =
 // logout user
 export const logout = () => async dispatch => {
   try {
+    dispatch({type: LOGOUT_REQUEST});
     await axiosInstance.get(`${BASE_URL}/api/v1/logout`);
     await AsyncStorage.clear();
     dispatch({type: LOGOUT_SUCCESS});
@@ -160,6 +165,28 @@ export const loadUser = () => async dispatch => {
   } catch (error) {
     dispatch({
       type: LOAD_USER_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+// delete User
+export const deleteUser = id => async dispatch => {
+  try {
+    dispatch({type: DELETE_USER_REQUEST});
+
+    const config = {headers: {'Content-Type': 'application/json'}};
+    const {data} = await axiosInstance.post(
+      `${BASE_URL}/api/v1/user/delete`,
+      {id},
+      config,
+    );
+    await AsyncStorage.clear();
+
+    dispatch({type: DELETE_USER_SUCCESS, payload: data.user});
+  } catch (error) {
+    dispatch({
+      type: DELETE_USER_FAIL,
       payload: error.response.data.message,
     });
   }

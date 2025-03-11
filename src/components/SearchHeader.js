@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {View, TextInput, TouchableOpacity} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import ComponentStyles from './ComponentStyles';

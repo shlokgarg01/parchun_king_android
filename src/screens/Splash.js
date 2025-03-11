@@ -1,3 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect} from 'react';
 import store from '../../store';
 import {loadUser} from '../actions/userActions';
@@ -11,11 +14,11 @@ const Splash = ({navigation}) => {
     store.dispatch(loadUser());
     let routeName = '';
 
-    if (isAuthenticated) {
-      routeName = 'tabnav';
-    } else {
-      routeName = 'signupotp';
-    }
+    // if (isAuthenticated) {
+    routeName = 'tabnav';
+    // } else {
+    //   routeName = 'signupotp';
+    // }
 
     setTimeout(() => {
       navigation.replace(routeName);

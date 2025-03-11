@@ -1,5 +1,8 @@
 import {
   CLEAR_ERRORS,
+  DELETE_USER_FAIL,
+  DELETE_USER_REQUEST,
+  DELETE_USER_SUCCESS,
   LOAD_USER_FAIL,
   LOAD_USER_REQUEST,
   LOAD_USER_SUCCESS,
@@ -8,6 +11,7 @@ import {
   LOGIN_VIA_OTP_SUCCESS,
   LOGOUT_FAIL,
   LOGOUT_SUCCESS,
+  LOGOUT_REQUEST,
   SEND_LOGIN_OTP_FAIL,
   SEND_LOGIN_OTP_REQUEST,
   SEND_LOGIN_OTP_SUCCESS,
@@ -34,6 +38,7 @@ export const userReducer = (state = {user: {}}, action) => {
     case SEND_SIGNUP_OTP_REQUEST:
     case SIGNUP_VIA_OTP_REQUEST:
     case LOAD_USER_REQUEST:
+    case LOGOUT_REQUEST:
       return {
         loading: true,
         isAuthenticated: false,
@@ -160,6 +165,38 @@ export const updateUserReducer = (state = {}, action) => {
     case CLEAR_ERRORS:
       return {
         ...state,
+        error: null,
+      };
+    default:
+      return state;
+  }
+};
+
+// Delete User
+export const deleteUserReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DELETE_USER_REQUEST:
+      return {
+        loading: true,
+        ...state,
+      };
+    case DELETE_USER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isDeleted: true,
+      };
+    case DELETE_USER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+        isDeleted: false,
+      };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        isDeleted: false,
         error: null,
       };
     default:

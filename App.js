@@ -8,7 +8,7 @@ import {PersistGate} from 'redux-persist/integration/react';
 import Loader from './src/components/Loader';
 import {persistor} from './store';
 import VersionCheck from 'react-native-version-check';
-import {Alert, Linking} from 'react-native';
+import {Alert, Linking, SafeAreaView} from 'react-native';
 import {compareVersions} from './src/utils/VersionCheck';
 
 const toastConfig = {
@@ -54,7 +54,9 @@ export default function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={<Loader />} persistor={persistor}>
-        <Routes />
+        <SafeAreaView style={{flex: 1}}>
+          <Routes />
+        </SafeAreaView>
         <Toast config={toastConfig} />
       </PersistGate>
     </Provider>
